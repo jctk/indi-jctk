@@ -635,12 +635,15 @@ int BaseDevice::setValue(const INDI::LilXmlElement &root, char *errmsg)
 
     // 2. allow changing the timeout
     {
-        AutoCNumeric locale;
-        bool ok = false;
-        auto timeoutValue = root.getAttribute("timeout").toDouble(&ok);
-
-        if (ok)
-            property.setTimeout(timeoutValue);
+        auto timeout = root.getAttribute("timeout");
+        if (timeout.isValid())
+        {
+            AutoCNumeric locale;
+            bool ok = false;
+            auto timeoutValue = timeout.toDouble(&ok);
+            if (ok)
+                property.setTimeout(timeoutValue);
+        }
     }
 
     // update specific values
